@@ -5,21 +5,19 @@ const bodySchema = z.object({
   password: z.string().min(8),
 });
 
-type User = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-};
-
 export default defineEventHandler(async (event) => {
-  const db = useDatabase();
+  // const db = useDatabase();
   const { email, password } = await readValidatedBody(event, bodySchema.parse);
 
   try {
-    const { rows } =
-      await db.sql`SELECT * FROM users WHERE email = ${email} limit 1`;
+    // const { rows } =
+    //   await db.sql`SELECT * FROM users WHERE email = ${email} limit 1`;
+
+    const rows = await useDrizzle()
+      .select()
+      .from(tables.users)
+      .where(eq(tables.users.email, email))
+      .limit(1);
 
     if (rows && rows.length > 0) {
       const user = rows[0] as User;

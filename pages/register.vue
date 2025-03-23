@@ -81,7 +81,6 @@
               <UCheckbox
                 v-model="formState.terms"
                 name="terms"
-                required
                 label="I agree to the Terms of Service and Privacy Policy"
               >
               </UCheckbox>
@@ -228,7 +227,7 @@ const onSubmit = async () => {
   } catch (error) {
     toast.add({
       title: "Error",
-      description: error.data.message,
+      description: (error as any).data.message,
       color: "red",
     });
   } finally {
